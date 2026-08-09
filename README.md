@@ -7,6 +7,34 @@ Pregúntale a tu base de datos en **lenguaje natural** (por voz o texto). Un LLM
 
 ![preview](https://adrianmoreno-dev.com/og/proyecto/voice-to-sql-dashboard.png)
 
+<!-- LOOP-MAP:START (generado por `php artisan project:loop readme` — no editar a mano) -->
+
+## El bucle que cierra
+
+<p align="center"><img src="https://adrianmoreno-dev.com/bucle/voice-to-sql-dashboard.svg" alt="Mapa del bucle de Voice-to-SQL Dashboard" width="900"></p>
+
+**Para** alguien de negocio que necesita un dato y no sabe SQL · **En cada pregunta**
+
+| Etapa | Qué pasa | Quién |
+|---|---|---|
+| **1. Disparador** | Necesito un dato de la base de datos y no sé escribir la consulta | persona |
+| **2. Acción** | Traduce la pregunta (voz o texto) a SQL inyectando el esquema real y comprueba que sea de solo lectura | software |
+| **3. Medición** | La tabla de resultados y el SQL generado, con tope de 100 filas | software |
+| **4. Decisión** | Decido si el dato responde a mi duda o reformulo la pregunta | persona |
+
+### Lo que no hace
+
+- No modifica datos: bloquea INSERT, UPDATE, DELETE, DROP y las sentencias múltiples.
+- No se conecta a bases de producción: la demo trae una SQLite de ejemplo generada por seed\_db.py.
+- No dibuja gráficas ni informes: devuelve la tabla y el SQL que la ha producido.
+
+### Por qué está construido así
+
+- **Web Speech API del navegador** en vez de transcribir el audio en el servidor — La voz se convierte a texto en el propio navegador: el audio no sale del equipo y no hay coste por minuto de transcripción.
+- **Solo SELECT y WITH** en vez de ejecutar el SQL del modelo tal cual — El modelo se equivoca; la validación rechaza escrituras y sentencias múltiples antes de tocar la base.
+
+<!-- LOOP-MAP:END -->
+
 ## ✨ Qué hace
 - **Voz → texto** en el navegador (Web Speech API, coste cero).
 - **Texto → SQL** con Groq + Llama 3.3 70B, inyectando el esquema real de la BD.
