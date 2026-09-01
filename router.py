@@ -38,9 +38,13 @@ if not GROQ_API_KEY:
         pass
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-# Cadena: 70b primero (mejor SQL), si 429 cae a 8b (más cuota). Si 8b
-# también está saturado, devolvemos 503 al frontend con mensaje claro.
-GROQ_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
+# 2026-09-01: Groq retiró la familia Llama (404 model_not_found). Modelos
+# DISTINTOS a los de los agentes de NeuralOps (openai/gpt-oss-*): el límite de
+# tokens/minuto es por modelo, así que separarlos evita que una tarea de fondo
+# deje sin cuota a un visitante.
+# Cadena: qwen3.8 primero (mejor SQL), si 429 cae a compound-mini. Si el
+# segundo también está saturado, devolvemos 503 al frontend con mensaje claro.
+GROQ_MODELS = ["qwen/qwen3.8-27b", "groq/compound-mini"]
 MAX_ROWS = 100  # cap absoluto al resultado para que el frontend lo renderice bien
 
 # Esquema fijo inyectado en el prompt del LLM
